@@ -1,0 +1,10 @@
+@URL_BASE=http://localhost:8001/api/v1
+@ContentType="application/json" 
+###
+# @name index
+GET {{URL_BASE}}/index
+
+HTTP/1.1 200  - OK
+content-type: application/json
+date: Sun, 24 Nov 2024 18:16:04 GMT
+content-length: 21
