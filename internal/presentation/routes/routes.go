@@ -43,7 +43,10 @@ func loggingMiddleware(next http.Handler) http.Handler {
 }
 
 // NewRouter creates a new router
-func NewRouter(indexHandler *handlers.IndexHandler) http.Handler {
+func NewRouter(
+	indexHandler *handlers.IndexHandler,
+	userHandler *handlers.UserHandler,
+) http.Handler {
 	log.Println("Settings up router...")
 
 	r := mux.NewRouter()
@@ -56,19 +59,24 @@ func NewRouter(indexHandler *handlers.IndexHandler) http.Handler {
 	indexRouter := prefixRouteV1.PathPrefix("/").Subrouter()
 	indexRouter.HandleFunc("/index", handlers.Index).Methods(http.MethodGet)
 
+	// Routes for users
+	userRouter := prefixRouteV1.PathPrefix("/user").Subrouter()
+	userRouter.HandleFunc("/pre-register", userHandler.PreRegister).Methods(http.MethodPost)
+	userRouter.HandleFunc("/register", userHandler.Register).Methods(http.MethodPost)
+
 	log.Println("List all routes:")
 	r.Walk(func(route *mux.Route, router *mux.Router, ancestors []*mux.Route) error {
 		pathTemplate, err := route.GetPathTemplate()
 		if err == nil {
 			methods, _ := route.GetMethods()
 			if len(methods) > 0 {
-				log.Printf("Rota encontradas: %s - Methods: %v", pathTemplate, methods)
+				log.Printf("Route found: %s - Methods: %v", pathTemplate, methods)
 			}
 		}
 		return nil
 	})
 
-	log.Println("Configurações das rotas completo")
+	log.Println("Setting up router... Done!")
 
 	return r
 }
