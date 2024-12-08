@@ -7,8 +7,11 @@ import (
 
 	"github.com/edutav/licentia-usoris/infrastructure/email"
 	"github.com/edutav/licentia-usoris/internal/config"
+	"github.com/edutav/licentia-usoris/internal/domain/reporitory/postgres"
 	"github.com/edutav/licentia-usoris/internal/presentation/handlers"
 	"github.com/edutav/licentia-usoris/internal/presentation/routes"
+	"github.com/edutav/licentia-usoris/internal/usecases"
+	"github.com/edutav/licentia-usoris/internal/usecases/validator"
 )
 
 type Server struct {
@@ -20,8 +23,13 @@ func NewServer(db *sql.DB, emailSender *email.Sender, cfg *config.Config) *Serve
 
 	indexHandler := handlers.NewIndexHandler()
 
+	// Components the users
+	userRepository := postgres.NewUserRepository(db)
+	userUseCase := usecases.NewUserUseCase(userRepository, emailSender, validator.ValidateUserPassword)
+	userHandler := handlers.NewUserHandler(userUseCase)
+
 	// Create router
-	router := routes.NewRouter(indexHandler)
+	router := routes.NewRouter(indexHandler, userHandler)
 	log.Println("Router created")
 
 	return &Server{
