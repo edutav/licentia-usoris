@@ -24,6 +24,20 @@ func NewUserHandler(userUseCase usecases.UserUseCase) *UserHandler {
 	}
 }
 
+// Handler for pre-registering a new user
+// @Summary Pre-register a new user
+// @Description Pre-register a new user
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param input body schemas.PreRegistrationInput true "User details"
+// @Success 201 {object} api.SingleResponse "User pre-registered successfully"
+// @Failure 400 {object} api.ErrorResponse "Invalid request body"
+// @Failure 404 {object} api.ErrorResponse "User not found"
+// @Failure 409 {object} api.ErrorResponse "Email already exists"
+// @Failure 415 {object} api.ErrorResponse "Invalid content type"
+// @Failure 500 {object} api.ErrorResponse "Internal server error"
+// @Router /users/pre-register [post]
 func (h *UserHandler) PreRegister(w http.ResponseWriter, r *http.Request) {
 	// Check content type
 	if r.Header.Get("Content-Type") != "application/json" {
@@ -146,6 +160,20 @@ func (h *UserHandler) PreRegister(w http.ResponseWriter, r *http.Request) {
 	api.SendSingleResponse(w, http.StatusCreated, "User pre-registered successfully", nil)
 }
 
+// Handler for registering a new user
+// @Summary Register a new user
+// @Description Register a new user
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param input body schemas.VerifyOTPInput true "User details"
+// @Success 201 {object} api.SingleResponse "User registered successfully"
+// @Failure 400 {object} api.ErrorResponse "Invalid request body"
+// @Failure 404 {object} api.ErrorResponse "User not found"
+// @Failure 409 {object} api.ErrorResponse "Email already exists"
+// @Failure 415 {object} api.ErrorResponse "Invalid content type"
+// @Failure 500 {object} api.ErrorResponse "Internal server error"
+// @Router /users/register [post]
 func (h *UserHandler) Register(w http.ResponseWriter, r *http.Request) {
 	// Check content type
 	if r.Header.Get("Content-Type") != "application/json" {

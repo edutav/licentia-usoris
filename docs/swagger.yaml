@@ -1,0 +1,168 @@
+basePath: /api/v1
+definitions:
+  api.ErrorResponse:
+    properties:
+      error:
+        type: string
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
+  api.SingleResponse:
+    properties:
+      data: {}
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
+  schemas.PreRegistrationInput:
+    properties:
+      date_of_birth:
+        example: "1990-01-01"
+        type: string
+      email:
+        example: example@mail.com
+        type: string
+      name:
+        example: John Doe
+        type: string
+      password:
+        example: password123
+        type: string
+      phone_number:
+        example: "08123456789"
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
+  schemas.VerifyOTPInput:
+    properties:
+      email:
+        example: example@mail.com
+        type: string
+      otp:
+        example: "123456"
+        type: string
+    required:
+    - email
+    - otp
+    type: object
+host: localhost:8001
+info:
+  contact:
+    email: support@swagger.io
+    name: Eduardo Tavares
+    url: http://www.swagger.io/support
+  description: This is the API documentation for the Auth.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Auctoritas API
+  version: v0.1.0
+paths:
+  /index:
+    get:
+      consumes:
+      - application/json
+      description: Get the API version
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: API version
+          schema:
+            $ref: '#/definitions/api.SingleResponse'
+      summary: Get the API version
+      tags:
+      - index
+  /users/pre-register:
+    post:
+      consumes:
+      - application/json
+      description: Pre-register a new user
+      parameters:
+      - description: User details
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.PreRegistrationInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User pre-registered successfully
+          schema:
+            $ref: '#/definitions/api.SingleResponse'
+        "400":
+          description: Invalid request body
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "409":
+          description: Email already exists
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "415":
+          description: Invalid content type
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      summary: Pre-register a new user
+      tags:
+      - users
+  /users/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user
+      parameters:
+      - description: User details
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.VerifyOTPInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User registered successfully
+          schema:
+            $ref: '#/definitions/api.SingleResponse'
+        "400":
+          description: Invalid request body
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "409":
+          description: Email already exists
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "415":
+          description: Invalid content type
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      summary: Register a new user
+      tags:
+      - users
+schemes:
+- http
+swagger: "2.0"

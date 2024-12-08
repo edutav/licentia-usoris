@@ -5,12 +5,24 @@ import (
 	"net/http"
 	"time"
 
+	_ "github.com/edutav/licentia-usoris/docs"
 	"github.com/edutav/licentia-usoris/infrastructure/database"
 	"github.com/edutav/licentia-usoris/infrastructure/email"
 	"github.com/edutav/licentia-usoris/infrastructure/server"
 	"github.com/edutav/licentia-usoris/internal/config"
 )
 
+// @title Licentia Usoris API
+// @description This is the API documentation for the manager users.
+// @version v0.1.0
+// @host localhost:8001
+// @BasePath /api/v1
+// @schemes http
+// @contact.name Eduardo Tavares
+// @contact.url http://www.swagger.io/support
+// @contact.email support@swagger.io
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 func main() {
 	// Define timezone default to UTC for the application
 	time.Local = time.UTC

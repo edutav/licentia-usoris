@@ -8,6 +8,7 @@ import (
 	"github.com/edutav/licentia-usoris/internal/presentation/handlers"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
 // statusRecorder struct to record the status of the response
@@ -52,6 +53,8 @@ func NewRouter(
 	r := mux.NewRouter()
 
 	r.Use(loggingMiddleware) // logging
+
+	r.PathPrefix("/docs/").Handler(httpSwagger.WrapHandler)
 
 	// Routes v1
 	prefixRouteV1 := r.PathPrefix("/api/v1").Subrouter()
