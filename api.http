@@ -1,10 +1,24 @@
 @URL_BASE=http://localhost:8001/api/v1
-@ContentType="application/json" 
+@ContentType=application/json
 ###
 # @name index
 GET {{URL_BASE}}/index
-
-HTTP/1.1 200  - OK
-content-type: application/json
-date: Sun, 24 Nov 2024 18:16:04 GMT
-content-length: 21
+###
+# @name pre_register
+POST {{URL_BASE}}/user/pre-register
+Content-Type: {{ContentType}}
+{
+  "name": "",
+  "email": "",
+  "date_of_birth": "",
+  "phone_number": "",
+  "password": ""
+}
+###
+# @name pre_register
+POST {{URL_BASE}}/user/register
+Content-Type: {{ContentType}}
+{
+    "email": "",
+    "otp": ""
+}
